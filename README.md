@@ -1,9 +1,7 @@
 # clocks
-Do It yourself digital clock and alarm code base. Python3 application running on Raspberry Pi Zero W.
-# admin
-System administration process to initialize the do it yourself home automation system (DIYHAS). 
+Do It yourself digital clock and alarm code base. Python3 application running on Raspberry Pi. 
 ## Description: 
-This is my latest **Raspberry Pi** project that implements an administration server and MQTT-to-HTTP translator for my "do it yourself home automation" system.  The application requires **Raspbian OS** and is written in **python3**. I usually create a **systemd service** so the application runs at boot.
+This is my updated **Raspberry Pi** project that implements an 24 hour clock server and MQTT-to-HTTP translator for my "do it yourself home automation" system.  The application requires **Raspbian OS** and is written in **python3**. I usually create a **systemd service** so the application runs at boot.
 
 ## Installation: 
 Installation is a two step process. First clone the repository, and then install dependent software with the **requiements.txt** file. 
