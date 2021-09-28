@@ -1,4 +1,4 @@
-# clocks
+# clock
 Do It yourself digital clock and alarm code base. Python3 application running on Raspberry Pi. 
 ## Description: 
 This is my updated **Raspberry Pi** project that implements an 24 hour clock server and MQTT-to-HTTP translator for my "do it yourself home automation" system.  The application requires **Raspbian OS** and is written in **python3**. I usually create a **systemd service** so the application runs at boot.
