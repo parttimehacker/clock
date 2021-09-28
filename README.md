@@ -4,7 +4,7 @@ Do It yourself digital clock and alarm code base. Python3 application running on
 This is my updated **Raspberry Pi** project that implements an 24 hour clock server and MQTT-to-HTTP translator for my "do it yourself home automation" system.  The application requires **Raspbian OS** and is written in **python3**. I usually create a **systemd service** so the application runs at boot.
 
 ## Installation: 
-Installation is a two step process. First clone the repository, and then install dependent software with the **requiements.txt** file. 
+Installation is a three step process. First clone the repository, and then install dependent software with the **requiements.txt** file. 
 
 - Step 1 - clone this repository
 ```
@@ -12,8 +12,14 @@ git clone https://github.com/parttimehacker/clock.git
 ```
 - Step 2 - Install required software - MQTT and RPI.GPIO libraries
 ```
-cd admin
+cd clock
 pip install -r requirements.txt
+```
+- Step 3 - Install required software - MQTT and RPI.GPIO libraries
+```
+cd pkg_classes
+chmod +x ./import_script.sh
+./import_script.sh
 ```
 ## Usage: 
 You need to decide whether you want to manually run the application or have it started as part of the boot process. I recommend making a **Raspbian OS systemd service**, so the application starts when rebooted or controled by **systemctl** commands. The **systemd_script.sh** creates a admin directory in **/usr/local directory**. The application files are then copied to this new directory. The application will also require a log file in **/var/log directory** called admin.log
