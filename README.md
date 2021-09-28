@@ -8,7 +8,7 @@ Installation is a two step process. First clone the repository, and then install
 
 - Step 1 - clone this repository
 ```
-git clone https://github.com/parttimehacker/admin.git
+git clone https://github.com/parttimehacker/clock.git
 ```
 - Step 2 - Install required software - MQTT and RPI.GPIO libraries
 ```
@@ -20,7 +20,7 @@ You need to decide whether you want to manually run the application or have it s
 ### Manual or Command Prompt
 To manually run the application enter the following command (sudo may be required on your system)
 ```
-sudo python3 admin.py --mq <MQTT_BROKER> --ws <WEB_SERVER>
+sudo python3 clock.py --mq <MQTT_BROKER> --ws <WEB_SERVER>
 ```
 - <MQTT_BROKER> I use the Open Source Mosquitto broker and bridge
 - <WEB_SERVER> is the **Django* web server 
@@ -34,10 +34,10 @@ vi admin.service
 ```
 This script also adds four aliases to the **.bash_aliases** in your home directory for convenience.
 ```
-sudo systemctl start admin
-sudo systemctl stop admin
-sudo systemctl restart admin
-sudo systemctl -l status admin
+sudo systemctl start clock
+sudo systemctl stop clock
+sudo systemctl restart clock
+sudo systemctl -l status clock
 ```
 - You will need to login or reload the **.bashrc** script to enable the alias entries. For example:
 ```
