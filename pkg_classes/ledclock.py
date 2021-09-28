@@ -40,7 +40,7 @@ COUNT_MODE = 2
 
 MAXIMUM_COUNT = 9999
 
-logging.config.fileConfig(fname='/home/an/clocks/logging.ini',
+logging.config.fileConfig(fname='/home/an/clock/logging.ini',
                           disable_existing_loggers=False)
 
 # Get the logger specified in the file

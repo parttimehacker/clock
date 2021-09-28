@@ -38,12 +38,18 @@ from Adafruit_LED_Backpack import BicolorMatrix8x8
 
 # imported clocks classes
 
-from pkg_classes.mqttlocationtopic import MqttLocationTopic
+# from pkg_classes.mqttlocationtopic import MqttLocationTopic
 from pkg_classes.ledclock import LedClock
 from pkg_classes.led8x8controller import Led8x8Controller
 from pkg_classes.alarmcontroller import AlarmController
 from pkg_classes.motioncontroller import MotionController
 from pkg_classes.intervaltimer import IntervalTimer
+
+from pkg_classes.testmodel import TestModel
+from pkg_classes.topicmodel import TopicModel
+from pkg_classes.whocontroller import WhoController
+from pkg_classes.configmodel import ConfigModel
+from pkg_classes.statusmodel import StatusModel
 
 #imported constants
 
@@ -58,22 +64,31 @@ ALARM_GPIO = 4
 MATRIX_I2C_ADDRESS = 0x70
 
 
-# Seven Segment LED Clock constants
-
-#TIME_MODE = 0
-#WHO_MODE = 1
-#COUNT_MODE = 2
-
 # Start logging and enable imported classes to log appropriately.
 
-logging.config.fileConfig(fname='/home/an/clocks/logging.ini',
-                          disable_existing_loggers=False)
-LOGGER = logging.getLogger("clocks")
+LOGGING_FILE = '/usr/local/clock/logging.ini'
+logging.config.fileConfig( fname=LOGGING_FILE, disable_existing_loggers=False )
+LOGGER = logging.getLogger(__name__)
 LOGGER.info('Application started')
 
-# Location provided by MQTT broker at runtime and managed by this class.
+# get the command line arguments
 
-TOPIC = MqttLocationTopic() # Location MQTT topic
+CONFIG = ConfigModel(LOGGING_FILE)
+
+# Location is used to create the switch topics
+
+TOPIC = TopicModel()  # Location MQTT topic
+TOPIC.set(CONFIG.get_location())
+
+# Set up who message handler from MQTT broker and wait for client.
+
+WHO = WhoController(LOGGING_FILE)
+
+# process diy/system/test development messages
+
+TEST = TestModel(LOGGING_FILE)
+
+# Initialize devices
 
 CLOCK = LedClock() # Seven segment LED backpack from Adafruit
 CLOCK.run()
@@ -169,8 +184,6 @@ TOPIC_DISPATCH_DICTIONARY = {
         {"method":system_message},
     "diy/system/who":
         {"method":system_message},
-    TOPIC.get_setup():
-        {"method":topic_message}
     }
 
 
@@ -214,17 +227,23 @@ if __name__ == '__main__':
     CLIENT.on_disconnect = on_disconnect
     CLIENT.on_message = on_message
 
-    # NOTE: Environment variable contains Mosquitto IP address.
+   # initilze the Who client for publishing.
 
-    BROKER_IP = os.environ.get('MQTT_BROKER_IP')
+    WHO.set_client(CLIENT)
 
-    CLIENT.connect(BROKER_IP, 1883, 60)
+    # command line argument for the switch mode - motion activated is the default
+
+    CLIENT.connect(CONFIG.get_broker(), 1883, 60)
     CLIENT.loop_start()
+    
+    # let MQTT stuff initialize
 
-    # Message broker will send the location and set waiting to false.
+    time.sleep(2) 
 
-    while TOPIC.waiting_for_location:
-        time.sleep(5.0)
+    # initialize status monitoring
+
+    STATUS = StatusModel(CLIENT)
+    STATUS.start()
 
     MOTION = MotionController(MOTION_GPIO)
     MOTION.enable()

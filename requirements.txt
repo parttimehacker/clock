@@ -1,0 +1,3 @@
+paho-mqtt
+RPI.GPIO
+Adafruit_LED_Backpack

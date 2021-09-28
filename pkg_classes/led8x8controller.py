@@ -55,7 +55,7 @@ FIBONACCI_MODE = 2
 WOPR_MODE = 3
 LIFE_MODE = 4
 
-logging.config.fileConfig(fname='/home/an/clocks/logging.ini', disable_existing_loggers=False)
+logging.config.fileConfig(fname='/home/an/clock/logging.ini', disable_existing_loggers=False)
 
 # Get the logger specified in the file
 LOGGER = logging.getLogger(__name__)
@@ -156,6 +156,7 @@ class Led8x8Controller:
             except Exception as ex:
                 LOGGER.info('Led8x8Controller: thread exception: %s %s', str(ex),
                             str(self.error_count))
+                print("led8x8 exception")
                 self.error_count += 1
                 if self.error_count < 10:
                     time.sleep(1.0)

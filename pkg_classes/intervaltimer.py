@@ -36,7 +36,7 @@ SECURITY_STATE = 2
 
 # Start logging and enable imported classes to log appropriately.
 
-logging.config.fileConfig(fname='/home/an/clocks/logging.ini',
+logging.config.fileConfig(fname='/home/an/clock/logging.ini',
                           disable_existing_loggers=False)
 LOGGER = logging.getLogger(__name__)
 LOGGER.info('Application started')
