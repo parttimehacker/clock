@@ -61,7 +61,7 @@ from pkg_classes.led8x8controller import FIRE_MODE, PANIC_MODE, FIBONACCI_MODE
 
 MOTION_GPIO = 24
 ALARM_GPIO = 4
-MATRIX_I2C_ADDRESS = 0x70
+MATRIX_I2C_ADDRESS = 0x71
 
 
 # Start logging and enable imported classes to log appropriately.
@@ -130,8 +130,10 @@ def system_message(client, msg):
     elif msg.topic == 'diy/system/who':
         if msg.payload == b'ON':
             CLOCK.set_mode(WHO_MODE)
+            WHO.turn_on()
         else:
             CLOCK.set_mode(TIME_MODE)
+            WHO.turn_off()
     elif msg.topic == 'diy/system/demo':
         if msg.payload == b'ON':
             TIMER.control_lights("Turn On")
@@ -155,10 +157,7 @@ def system_message(client, msg):
     elif msg.topic == TOPIC.get_setup():
         topic = msg.payload.decode('utf-8') + "/motion"
         TOPIC.set(topic)
-    if msg.topic == 'diy/system/who':
-        if msg.payload == "ON":
-            if not TOPIC.waiting_for_location:
-                client.publish(TOPIC.get_status(), TOPIC.get_location(), 0, True)
+
 
 #pylint: disable=unused-argument
 
@@ -207,7 +206,6 @@ def on_connect(client, userdata, flags, rc_msg):
     client.subscribe("diy/system/security", 1)
     client.subscribe("diy/system/silent", 1)
     client.subscribe("diy/system/who", 1)
-    client.subscribe(TOPIC.get_setup(), 1)
     client.subscribe("diy/+/+/motion", 1)
 
 
